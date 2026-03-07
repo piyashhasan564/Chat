@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রাইভেট চ্যাট রুম</title>
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #ece5dd; margin: 0; padding: 0; }
+        .hidden { display: none !important; }
+        
+        /* লগইন ও রেজিস্ট্রেশন ফর্মের ডিজাইন */
+        #auth-container { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #auth-container h2 { text-align: center; color: #075e54; margin-bottom: 20px; }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        .auth-btn { width: 100%; padding: 12px; background: #075e54; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; font-weight: bold; }
+        .auth-btn:hover { background: #128c7e; }
+        .toggle-text { color: #3498db; cursor: pointer; text-align: center; display: block; margin-top: 15px; text-decoration: underline; }
+
+        /* চ্যাট রুমের ডিজাইন */
+        #chat-container { display: flex; flex-direction: column; height: 100vh; max-width: 600px; margin: 0 auto; background: #e5ddd5; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #chat-header { background: #075e54; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        #logout-btn { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #logout-btn:hover { background: #c82333; }
+        
+        #messages { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .msg-box { max-width: 75%; padding: 10px 15px; border-radius: 8px; position: relative; font-size: 15px; word-wrap: break-word; }
+        .my-msg { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 0; }
+        .other-msg { background: white; align-self: flex-start; border-bottom-left-radius: 0; }
+        .sender-name { font-size: 11px; color: #555; margin-bottom: 4px; display: block; font-weight: bold; }
+
+        /* মেসেজ লেখার ফর্ম */
+        #chat-form { display: flex; padding: 15px; background: #f0f0f0; }
+        #chat-input { flex-grow: 1; border: none; padding: 12px 20px; border-radius: 25px; font-size: 16px; outline: none; }
+        #chat-form button { background: #128C7E; color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <!-- ১. লগইন / রেজিস্ট্রেশন সেকশন -->
+    <div id="auth-container">
+        <h2 id="auth-title">লগইন করুন</h2>
+        <form id="auth-form">
+            <input type="text" id="name-input" class="input-field hidden" placeholder="আপনার পুরো নাম">
+            <input type="email" id="email-input" class="input-field" placeholder="ইমেইল অ্যাড্রেস" required>
+            <input type="password" id="password-input" class="input-field" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" required minlength="6">
+            <button type="submit" id="auth-submit-btn" class="auth-btn">লগইন</button>
+        </form>
+        <span class="toggle-text" id="toggle-auth">অ্যাকাউন্ট নেই? নতুন অ্যাকাউন্ট খুলুন</span>
+    </div>
+
+    <!-- ২. চ্যাট রুম সেকশন -->
+    <div id="chat-container" class="hidden">
+        <div id="chat-header">
+            <div>
+                <strong style="font-size: 18px;">বন্ধুদের আড্ডা</strong> <br>
+                <small>আপনি: <span id="user-name-display"></span></small>
+            </div>
+            <button id="logout-btn">লগআউট</button>
+        </div>
+        
+        <div id="messages"></div>
+        
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="মেসেজ লিখুন..." required autocomplete="off" />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
+    <script type="module">
+        // ফায়ারবেস অ্যাপ, ডাটাবেস এবং অথেনটিকেশন ইম্পোর্ট
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        // আপনার ফায়ারবেস কনফিগারেশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3HzAAEF42fE_siFSVCHKmg2Ir0HfI66g",
+            authDomain: "p-chat-b6aae.firebaseapp.com",
+            databaseURL: "https://p-chat-b6aae-default-rtdb.firebaseio.com",
+            projectId: "p-chat-b6aae",
+            storageBucket: "p-chat-b6aae.firebasestorage.app",
+            messagingSenderId: "23194469942",
+            appId: "1:23194469942:web:0f2f7774d6fbf4570bba97"
+        };
+
+        // ফায়ারবেস চালু করা
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const messagesRef = ref(db, 'messages');
+
+        // HTML এলিমেন্টগুলো ধরা
+        const authContainer = document.getElementById('auth-container');
+        const chatContainer = document.getElementById('chat-container');
+        const authForm = document.getElementById('auth-form');
+        const authTitle = document.getElementById('auth-title');
+        const nameInput = document.getElementById('name-input');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const toggleAuth = document.getElementById('toggle-auth');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userNameDisplay = document.getElementById('user-name-display');
+        const messagesDiv = document.getElementById('messages');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+
+        let isLoginMode = true;
+        let unsubscribeMessages = null;
+
+        // লগইন ও রেজিস্ট্রেশন ফর্ম অদলবদল করা
+        toggleAuth.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                authTitle.innerText = "লগইন করুন";
+                nameInput.classList.add('hidden');
+                nameInput.required = false;
+                authSubmitBtn.innerText = "লগইন";
+                toggleAuth.innerText = "অ্যাকাউন্ট নেই? নতুন অ্যাকাউন্ট খুলুন";
+            } else {
+                authTitle.innerText = "নতুন অ্যাকাউন্ট খুলুন";
+                nameInput.classList.remove('hidden');
+                nameInput.required = true;
+                authSubmitBtn.innerText = "অ্যাকাউন্ট তৈরি করুন";
+                toggleAuth.innerText = "অ্যাকাউন্ট আছে? লগইন করুন";
+            }
+        });
+
+        // ফর্ম সাবমিট (লগইন বা রেজিস্ট্রেশন)
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const name = nameInput.value;
+
+            if (isLoginMode) {
+                // লগইন করা
+                signInWithEmailAndPassword(auth, email, password)
+                    .catch(error => alert("লগইন ফেইল হয়েছে: " + error.message));
+            } else {
+                // নতুন অ্যাকাউন্ট তৈরি করা
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // অ্যাকাউন্টে ইউজারের নাম যুক্ত করা
+                        return updateProfile(userCredential.user, { displayName: name });
+                    })
+                    .catch(error => alert("অ্যাকাউন্ট তৈরি করা যায়নি: " + error.message));
+            }
+        });
+
+        // লগআউট করা
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // ইউজার লগইন আছে কি নেই তা চেক করা (Auth State Observer)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // ইউজার লগইন থাকলে চ্যাটরুম দেখাবে
+                authContainer.classList.add('hidden');
+                chatContainer.classList.remove('hidden');
+                userNameDisplay.innerText = user.displayName || nameInput.value || "ইউজার";
+                
+                // আগের মেসেজগুলো ক্লিয়ার করে ডাটাবেস থেকে রিয়েল-টাইমে মেসেজ আনা শুরু করা
+                messagesDiv.innerHTML = ''; 
+                unsubscribeMessages = onChildAdded(messagesRef, (snapshot) => {
+                    const data = snapshot.val();
+                    const isMyMessage = data.uid === user.uid; // চেক করা মেসেজটি আমার কি না
+                    
+                    const msgBox = document.createElement('div');
+                    msgBox.className = `msg-box ${isMyMessage ? 'my-msg' : 'other-msg'}`;
+                    
+                    // মেসেজের উপরে নাম দেখানো
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'sender-name';
+                    nameSpan.innerText = isMyMessage ? "আপনি" : data.senderName;
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.innerText = data.text;
+                    
+                    msgBox.appendChild(nameSpan);
+                    msgBox.appendChild(textSpan);
+                    messagesDiv.appendChild(msgBox);
+                    
+                    // নতুন মেসেজ এলে নিচে স্ক্রল করা
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                });
+            } else {
+                // ইউজার লগআউট হয়ে গেলে লগইন ফর্ম দেখাবে
+                authContainer.classList.remove('hidden');
+                chatContainer.classList.add('hidden');
+                authForm.reset();
+                if (unsubscribeMessages) {
+                    unsubscribeMessages(); // ডাটাবেস লিসেনার বন্ধ করা
+                }
+            }
+        });
+
+        // মেসেজ পাঠানো
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (chatInput.value.trim() !== "") {
+                push(messagesRef, {
+                    text: chatInput.value,
+                    senderName: auth.currentUser.displayName || "ইউজার",
+                    uid: auth.currentUser.uid, // ইউজারের আইডি সংরক্ষণ করা যাতে নিজের মেসেজ চেনা যায়
+                    timestamp: Date.now()
+                });
+                chatInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
