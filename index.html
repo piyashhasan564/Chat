@@ -23,24 +23,33 @@
         /* মেইন লেআউট (এডমিন সাইডবার সহ) */
         #main-layout { display: flex; max-width: 950px; margin: 0 auto; height: 100vh; background: #fff; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
 
-        /* এডমিন সাইডবার (ইউজার লিস্ট) */
+        /* এডমিন সাইডবার */
         #admin-sidebar { width: 320px; border-right: 1px solid #eee; background: #f8f9fa; display: flex; flex-direction: column; }
-        #admin-sidebar-header { background: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        #admin-sidebar-header { background: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); position: relative; }
         
-        /* ফ্লেক্স অর্ডার দিয়ে সর্টিং করার জন্য */
-        #user-list-container { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        /* থ্রি-ডট মেনু (Admin Dropdown) */
+        #admin-menu-toggle { background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 0 5px; transition: 0.3s; }
+        #admin-menu-toggle:hover { opacity: 0.8; }
+        #admin-dropdown-menu { position: absolute; top: 60px; right: 20px; background: white; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); width: 170px; z-index: 100; overflow: hidden; border: 1px solid #eee; }
+        .dropdown-item { padding: 12px 15px; color: #333; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #f1f1f1; }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background: #f8f9fa; color: #3498db; }
+
+        /* সাইডবার লিস্ট কন্টেইনার (Flex Column for ordering) */
+        #category-list-view, #category-users-view { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        #cat-user-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
         
-        .user-item { display: flex; align-items: center; gap: 12px; padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.3s; }
-        .user-item:hover { background: #e9ecef; }
+        .cat-item, .user-item { display: flex; align-items: center; gap: 12px; padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.3s; }
+        .cat-item:hover, .user-item:hover { background: #e9ecef; }
         .user-item.active { background: #d6eaf8; border-left: 4px solid #3498db; }
-        .user-item img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; flex-shrink: 0; }
+        .cat-item img, .user-item img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; flex-shrink: 0; background: #fff; }
         
         /* লাস্ট মেসেজ এবং ব্যাজ স্টাইল */
-        .user-item-info { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
-        .user-item-name { font-weight: 600; font-size: 15px; color: #333; margin-bottom: 4px; }
+        .cat-item-info, .user-item-info { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .cat-item-name, .user-item-name { font-weight: 600; font-size: 15px; color: #333; margin-bottom: 4px; }
         .user-item-last-msg { font-size: 13px; color: #7f8c8d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .unread-badge { background: #27ae60; color: white; border-radius: 20px; min-width: 18px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 6px; margin-left: auto; box-shadow: 0 2px 5px rgba(39, 174, 96, 0.4); }
+        .unread-badge { background: #e74c3c; color: white; border-radius: 20px; min-width: 18px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; padding: 0 6px; margin-left: auto; box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); }
 
         /* চ্যাট রুমের ডিজাইন */
         #chat-container { display: flex; flex-direction: column; flex-grow: 1; height: 100vh; position: relative; }
@@ -100,7 +109,7 @@
 
         /* মডাল ব্যাকগ্রাউন্ড ও অন্যান্য */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; backdrop-filter: blur(4px); z-index: 2000; }
-        .modal-content { background: white; padding: 30px; border-radius: 15px; text-align: center; width: 80%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-content { background: white; padding: 30px; border-radius: 15px; text-align: center; width: 80%; max-width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; }
         .modal-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #3498db; margin-bottom: 10px; }
         .modal-email { font-size: 14px; color: #555; margin-bottom: 20px; font-weight: 600; word-wrap: break-word; }
         
@@ -116,6 +125,16 @@
         .btn:hover { filter: brightness(0.9); }
         .loader-text { color: #e67e22; font-size: 13px; font-weight: bold; margin-top: 10px; }
         .flex-btn-group { display: flex; gap: 10px; }
+
+        /* Pending User Table List */
+        .pending-row { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align: left; border: 1px solid #eee; }
+        .pending-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .pending-info img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        .pending-info div { display: flex; flex-direction: column; }
+        .pending-controls { display: flex; flex-direction: column; gap: 5px; width: 120px; }
+        .pending-controls select { padding: 6px; border-radius: 5px; border: 1px solid #ddd; outline: none; font-size: 12px; }
+        .pending-controls button { background: #27ae60; color: white; border: none; padding: 6px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.2s; }
+        .pending-controls button:hover { background: #2196f3; }
     </style>
 </head>
 <body>
@@ -145,23 +164,46 @@
                 <div class="header-profile" id="admin-open-profile-btn" title="নিজের প্রোফাইল দেখতে ক্লিক করুন">
                     <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="admin-header-avatar" class="avatar" alt="Profile">
                     <div>
-                        <strong style="font-size: 16px;">চ্যাট লিস্ট</strong> <br>
+                        <strong style="font-size: 16px;">সাপোর্ট প্যানেল</strong> <br>
                         <small id="admin-name-display"></small>
                     </div>
                 </div>
-                <button class="logout-btn" id="admin-logout-btn">লগআউট</button>
+                
+                <!-- থ্রি ডট মেনু -->
+                <div>
+                    <button id="admin-menu-toggle">&#8942;</button>
+                    <div id="admin-dropdown-menu" class="hidden">
+                        <div class="dropdown-item" id="menu-add-category">📂 Add Category</div>
+                        <div class="dropdown-item" id="menu-user-approve">👥 User Approve</div>
+                        <div class="dropdown-item" id="menu-logout" style="color: #e74c3c;">🚪 Logout</div>
+                    </div>
+                </div>
             </div>
             
-            <div id="user-list-container">
-                <!-- ডাইনামিকভাবে ইউজার লিস্ট আসবে -->
+            <!-- Category List View -->
+            <div id="category-list-view">
+                <!-- ডাইনামিক ক্যাটাগরি লিস্ট আসবে -->
+            </div>
+            
+            <!-- Specific Category Users View -->
+            <div id="category-users-view" class="hidden">
+                <div style="background: #ecf0f1; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button id="back-to-cat-btn" style="background:none; border:none; cursor:pointer; font-size: 18px; color: #2c3e50;">⬅️</button>
+                        <strong id="cat-view-title" style="font-size: 15px; color: #2c3e50;">Category Name</strong>
+                    </div>
+                    <button id="btn-broadcast" style="background: #2c3e50; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.3s;"><i style="margin-right:4px;">📢</i> Send All</button>
+                </div>
+                <!-- ওই ক্যাটাগরির ইউজাররা এখানে আসবে -->
+                <div id="cat-user-list"></div>
             </div>
         </div>
 
         <!-- চ্যাট রুম সেকশন -->
         <div id="chat-container">
-            <!-- এডমিন প্লেসহোল্ডার -->
+            <!-- প্লেসহোল্ডার (অ্যাডমিন এবং পেন্ডিং ইউজারের জন্য) -->
             <div id="admin-placeholder" class="hidden">
-                <p>💬 মেসেজ দেখার জন্য ইউজার সিলেক্ট করুন</p>
+                <p id="placeholder-text">💬 মেসেজ দেখার জন্য ইউজার সিলেক্ট করুন</p>
             </div>
 
             <div id="chat-header">
@@ -171,11 +213,13 @@
                     <div class="header-profile" id="open-profile-btn" title="প্রোফাইল দেখতে ক্লিক করুন">
                         <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="header-avatar" class="avatar" alt="Profile">
                         <div>
+                            <!-- ডাইনামিক ক্যাটাগরি বা ইউজারের নাম বসবে এখানে -->
                             <strong style="font-size: 18px;" id="chat-title-display">সাপোর্ট চ্যাট</strong> <br>
                             <small id="user-name-display"></small>
                         </div>
                     </div>
                 </div>
+                <!-- ইউজারের জন্য লগআউট বাটন -->
                 <button class="logout-btn" id="logout-btn">লগআউট</button>
             </div>
             
@@ -197,7 +241,7 @@
     <div id="profile-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="modal-avatar-img" class="modal-avatar" alt="Profile">
-            <h3 id="modal-name-text" style="margin: 5px 0; color: #2c3e50;"></h3> <!-- Added Name Field -->
+            <h3 id="modal-name-text" style="margin: 5px 0; color: #2c3e50;"></h3>
             <div class="modal-email">
                 <span id="modal-email-text">example@email.com</span><br>
                 <span id="admin-badge" class="hidden">🛡️ Admin</span>
@@ -237,7 +281,7 @@
         </div>
     </div>
 
-    <!-- ৬. ইন-অ্যাপ ইমেজ ভিউয়ার মডাল (Full Screen Image inside Web/App) -->
+    <!-- ৬. ইন-অ্যাপ ইমেজ ভিউয়ার মডাল -->
     <div id="image-modal" class="modal-overlay hidden" style="z-index: 3000;">
         <div style="position: relative; max-width: 95%; max-height: 90vh;">
             <span id="close-image-btn" style="position: absolute; top: -15px; right: -10px; background: #e74c3c; color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 3001;">&times;</span>
@@ -245,7 +289,7 @@
         </div>
     </div>
 
-    <!-- ৭. মেসেজ ডিলিট করার মডাল (Long Press Action) -->
+    <!-- ৭. মেসেজ ডিলিট করার মডাল -->
     <div id="delete-modal" class="modal-overlay hidden" style="z-index: 2500;">
         <div class="modal-content" style="padding: 25px;">
             <h3 style="margin-top: 0; color: #e74c3c;">মেসেজ অপশন</h3>
@@ -255,12 +299,64 @@
         </div>
     </div>
 
+    <!-- ৮. অ্যাড ক্যাটাগরি মডাল (UPDATED WITH IMAGE) -->
+    <div id="add-category-modal" class="modal-overlay hidden" style="z-index: 2200;">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: #2c3e50;">নতুন ক্যাটাগরি তৈরি করুন</h3>
+            <input type="text" id="new-category-input" class="input-field" placeholder="উদাঃ VIP Support, Billing">
+            
+            <!-- ক্যাটাগরি প্রোফাইল পিকচার -->
+            <div class="btn btn-upload" style="margin-bottom: 20px;">
+                📷 ক্যাটাগরির ছবি দিন (ঐচ্ছিক)
+                <input type="file" id="cat-pic-input" accept="image/*">
+            </div>
+            <p id="cat-loader" class="loader-text hidden">ছবি আপলোড হচ্ছে...</p>
+
+            <div class="flex-btn-group">
+                <button class="btn btn-cancel" onclick="document.getElementById('add-category-modal').classList.add('hidden')">বাতিল</button>
+                <button class="btn btn-save" id="save-category-btn">সেভ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৯. ইউজার অ্যাপ্রুভ মডাল -->
+    <div id="user-approve-modal" class="modal-overlay hidden" style="z-index: 2200;">
+        <div class="modal-content" style="width: 90%; max-width: 450px;">
+            <h3 style="margin-top:0; color: #3498db;">পেন্ডিং ইউজার লিস্ট</h3>
+            <div id="pending-users-list" style="margin-bottom: 20px;">
+                <!-- ডাইনামিক পেন্ডিং ইউজার আসবে -->
+            </div>
+            <button class="btn btn-close" onclick="document.getElementById('user-approve-modal').classList.add('hidden')">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- ১০. ব্রডকাস্ট (Send to All) মডাল (NEW) -->
+    <div id="broadcast-modal" class="modal-overlay hidden" style="z-index: 2300;">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: #2c3e50;">ব্রডকাস্ট মেসেজ</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">ক্যাটাগরি: <strong id="broadcast-cat-name" style="color: #3498db;"></strong> এর সবাইকে মেসেজ দিন</p>
+
+            <textarea id="broadcast-text" class="input-field" placeholder="মেসেজ লিখুন..." style="height: 80px; resize: none; margin-bottom: 10px;"></textarea>
+
+            <div class="btn btn-upload" style="background: #f39c12; margin-bottom: 15px;">
+    <span id="broadcast-file-name">📷 ছবি সংযুক্ত করুন (ঐচ্ছিক)</span>
+    <input type="file" id="broadcast-img" accept="image/*">
+</div>
+            <p id="broadcast-loader" class="loader-text hidden">মেসেজ পাঠানো হচ্ছে, অপেক্ষা করুন...</p>
+
+            <div class="flex-btn-group">
+                <button class="btn btn-cancel" onclick="document.getElementById('broadcast-modal').classList.add('hidden')">বাতিল</button>
+                <button class="btn btn-save" id="send-broadcast-btn" style="background: #27ae60;">সেন্ড করুন</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, updatePassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getDatabase, ref, push, onChildAdded, onChildChanged, onChildRemoved, remove, off, update, query, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBxbIPqj-k08XckrZaEqbukK7fcyByGchk",
@@ -283,7 +379,6 @@
         const authContainer = document.getElementById('auth-container');
         const mainLayout = document.getElementById('main-layout');
         const adminSidebar = document.getElementById('admin-sidebar');
-        const userListContainer = document.getElementById('user-list-container');
         const adminPlaceholder = document.getElementById('admin-placeholder');
         const chatTitleDisplay = document.getElementById('chat-title-display');
         const messagesDiv = document.getElementById('messages');
@@ -296,6 +391,13 @@
         let currentChatRoomId = null; 
         let activeChatListener = null; 
         let currentSelectedUser = null; 
+        
+        let globalCategories = []; // { name: '', photoURL: '' }
+        let globalUsers =[];      
+
+        let userUnreadData = {}; // সবার আনরিড মেসেজ ট্র্যাক করার জন্য
+        let currentlyOpenCategory = null; 
+        let activeChatListenersMap = {};
 
         // --- Long Press Delete Variables ---
         let pressTimer;
@@ -377,13 +479,16 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     await updateProfile(userCredential.user, { displayName: name, photoURL: photoUrl });
                     
+                    // নতুন ইউজারের ক্ষেত্রে status: "pending"
                     await setDoc(doc(dbFirestore, "Users", userCredential.user.uid), {
                         uid: userCredential.user.uid,
                         name: name,
                         email: email,
                         photoURL: photoUrl,
                         role: "user",
-                        password: password 
+                        password: password,
+                        status: "pending", 
+                        category: ""
                     });
                 }
             } catch (error) { alert("এরর: " + error.message); }
@@ -393,7 +498,86 @@
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
-        document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('menu-logout').addEventListener('click', () => signOut(auth));
+
+        // অ্যাডমিনের ৩-ডট মেনু টগল
+        document.getElementById('admin-menu-toggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('admin-dropdown-menu').classList.toggle('hidden');
+        });
+        
+        window.addEventListener('click', () => {
+            document.getElementById('admin-dropdown-menu').classList.add('hidden');
+        });
+
+        // Add Category Modal
+        document.getElementById('menu-add-category').addEventListener('click', () => {
+            document.getElementById('add-category-modal').classList.remove('hidden');
+        });
+        
+        document.getElementById('save-category-btn').addEventListener('click', async () => {
+            const catName = document.getElementById('new-category-input').value.trim();
+            const catPicInput = document.getElementById('cat-pic-input');
+            if(!catName) return alert("ক্যাটাগরির নাম লিখুন!");
+            
+            const btn = document.getElementById('save-category-btn');
+            btn.innerText = "অপেক্ষা করুন...";
+            let catPhotoUrl = DEFAULT_AVATAR;
+
+            try {
+                if(catPicInput.files.length > 0) {
+                    const loader = document.getElementById('cat-loader');
+                    loader.classList.remove('hidden');
+                    const comp = await compressImage(catPicInput.files[0], 2);
+                    catPhotoUrl = await uploadImageToImgBB(comp);
+                    loader.classList.add('hidden');
+                }
+
+                await addDoc(collection(dbFirestore, "Categories"), { 
+                    name: catName, 
+                    photoURL: catPhotoUrl 
+                });
+                
+                document.getElementById('new-category-input').value = '';
+                catPicInput.value = '';
+                document.getElementById('add-category-modal').classList.add('hidden');
+                alert("ক্যাটাগরি সফলভাবে যুক্ত হয়েছে!");
+            } catch (e) { alert("Error: " + e.message); }
+            
+            btn.innerText = "সেভ করুন";
+        });
+
+        // User Approve Modal
+        document.getElementById('menu-user-approve').addEventListener('click', () => {
+            document.getElementById('user-approve-modal').classList.remove('hidden');
+            renderPendingUsers(); 
+        });
+
+        // Data Fetching
+        function fetchGlobalData() {
+            onSnapshot(collection(dbFirestore, "Categories"), (snap) => {
+                globalCategories = snap.docs.map(doc => doc.data());
+                if (currentUserRole === 'admin') {
+                    renderAdminSidebar();
+                    renderPendingUsers();
+                }
+            });
+
+            onSnapshot(collection(dbFirestore, "Users"), (snap) => {
+                globalUsers =[];
+                snap.forEach(doc => globalUsers.push(doc.data()));
+                
+                if (currentUserRole === 'admin') {
+                    setupAdminListeners(); // সব ইউজারের আনরিড মেসেজ ট্র্যাক করার জন্য
+                    renderAdminSidebar();
+                    renderPendingUsers();
+                    if(currentlyOpenCategory) updateUsersInCatUI();
+                } else if (currentUserRole === 'user') {
+                    const myData = globalUsers.find(u => u.uid === auth.currentUser.uid);
+                    if (myData) checkUserAccess(myData);
+                }
+            });
+        }
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -407,31 +591,32 @@
                 document.getElementById('admin-header-avatar').src = user.photoURL || DEFAULT_AVATAR;
 
                 document.getElementById('modal-avatar-img').src = user.photoURL || DEFAULT_AVATAR;
-                document.getElementById('modal-name-text').innerText = user.displayName || "ইউজার"; // Added Name
+                document.getElementById('modal-name-text').innerText = user.displayName || "ইউজার"; 
                 document.getElementById('modal-email-text').innerText = user.email;
 
                 const userDoc = await getDoc(doc(dbFirestore, "Users", user.uid));
                 if (userDoc.exists()) currentUserRole = userDoc.data().role || "user";
+
+                fetchGlobalData();
 
                 if(currentUserRole === "admin") {
                     adminBadge.classList.remove('hidden');
                     mainLayout.classList.add('is-admin');
                     mainLayout.classList.remove('mobile-chat-active');
                     adminSidebar.classList.remove('hidden');
+                    
+                    document.getElementById('logout-btn').classList.add('hidden'); 
                     adminPlaceholder.classList.remove('hidden');
+                    document.getElementById('placeholder-text').innerText = "💬 মেসেজ দেখার জন্য ইউজার সিলেক্ট করুন";
+                    
                     chatForm.classList.add('hidden'); 
                     chatTitleDisplay.innerText = "সাপোর্ট চ্যাট প্যানেল";
-                    loadUserListForAdmin();
                 } else {
                     adminBadge.classList.add('hidden');
                     mainLayout.classList.remove('is-admin');
                     mainLayout.classList.add('mobile-chat-active'); 
                     adminSidebar.classList.add('hidden');
-                    adminPlaceholder.classList.add('hidden');
-                    chatForm.classList.remove('hidden'); 
-                    chatTitleDisplay.innerText = "সাপোর্ট সেন্টারে স্বাগতম";
-                    currentChatRoomId = user.uid; 
-                    loadChatMessages(currentChatRoomId);
+                    document.getElementById('logout-btn').classList.remove('hidden'); 
                 }
             } else {
                 authContainer.classList.remove('hidden');
@@ -449,102 +634,291 @@
             }
         });
 
-        // --- এডমিনের জন্য চ্যাট লিস্ট, লাস্ট মেসেজ, ব্যাজ এবং ডাইনামিক সর্টিং ---
-        function loadUserListForAdmin() {
-            onSnapshot(collection(dbFirestore, "Users"), (snapshot) => {
-                userListContainer.innerHTML = '';
-                snapshot.forEach((docSnap) => {
-                    const userData = docSnap.data();
-                    if (userData.role !== "admin") { 
-                        const userDiv = document.createElement('div');
-                        userDiv.className = 'user-item';
-                        userDiv.id = `user-div-${userData.uid}`; // ডাইনামিক সর্টিং এর জন্য ID
-                        
-                        userDiv.innerHTML = `
-                            <img src="${userData.photoURL || DEFAULT_AVATAR}">
-                            <div class="user-item-info">
-                                <div class="user-item-name">${userData.name || 'Unknown'}</div>
-                                <div class="user-item-last-msg">লোড হচ্ছে...</div>
-                            </div>
-                            <!-- Unread Badge -->
-                            <div class="unread-badge hidden">0</div>
-                        `;
-                        
-                        // DOM-এ সরাসরি খুঁজে পাওয়ার জন্য querySelector ব্যবহার করা হলো (Batch Fix)
-                        const elMsg = userDiv.querySelector('.user-item-last-msg');
-                        const elBadge = userDiv.querySelector('.unread-badge');
-                        const userDivEl = userDiv;
-                        
-                        // ইউজারের সম্পূর্ণ চ্যাট রুমে লিসেনার, যাতে লাস্ট মেসেজ, আনরিড ব্যাজ এবং টাইমস্ট্যাম্প পাওয়া যায়
-                        const chatRef = ref(db, `chats/${userData.uid}`);
-                        onValue(chatRef, (msgSnap) => {
-                            let unreadCount = 0;
-                            let lastMsgTime = 0;
-                            let lastText = "কোনো মেসেজ নেই";
+        function checkUserAccess(userData) {
+            const status = userData.status || 'approved'; 
+            const categoryName = userData.category || 'General Support';
 
-                            if(msgSnap.exists()) {
-                                msgSnap.forEach(child => {
-                                    const m = child.val();
-                                    // যদি মেসেজটি আমার জন্য ডিলিট করা না থাকে, তাহলেই কাউন্ট করবো
-                                    if(!m.deletedBy || !m.deletedBy[auth.currentUser.uid]) {
-                                        if (m.timestamp > lastMsgTime) {
-                                            lastMsgTime = m.timestamp;
-                                            lastText = m.text ? m.text : "📷 ছবি";
-                                            if(m.uid === auth.currentUser.uid) {
-                                                lastText = "আপনি: " + lastText;
-                                            }
-                                        }
-                                        if (m.uid !== auth.currentUser.uid && m.status !== 'seen') {
-                                            unreadCount++;
-                                        }
-                                    }
-                                });
-                            }
+            if (status === 'pending') {
+                adminPlaceholder.classList.remove('hidden');
+                document.getElementById('placeholder-text').innerText = "⏳ অ্যাডমিন অ্যাপ্রুভালের অপেক্ষায় আছেন...";
+                chatForm.classList.add('hidden');
+                chatTitleDisplay.innerText = "Pending Approval";
+                
+                if (activeChatListener) {
+                    activeChatListener.added();
+                    activeChatListener.changed();
+                    if(activeChatListener.removed) activeChatListener.removed();
+                    activeChatListener = null;
+                }
+            } else {
+                adminPlaceholder.classList.add('hidden');
+                chatForm.classList.remove('hidden');
+                chatTitleDisplay.innerText = categoryName; 
+                
+                if(currentChatRoomId !== userData.uid) {
+                    currentChatRoomId = userData.uid; 
+                    loadChatMessages(currentChatRoomId);
+                }
+            }
+        }
 
-                            if(elMsg) elMsg.innerText = lastText;
-                            if(elBadge) {
-                                if(unreadCount > 0) {
-                                    elBadge.innerText = unreadCount;
-                                    elBadge.classList.remove('hidden');
-                                } else {
-                                    elBadge.classList.add('hidden');
-                                }
-                            }
-                            // লাস্ট মেসেজ দেওয়া ইউজার সবার উপরে যাবে (CSS Flex order)
-                            if(userDivEl) {
-                                userDivEl.style.order = lastMsgTime > 0 ? -lastMsgTime : 0;
-                            }
-                        });
+        function renderPendingUsers() {
+            const listDiv = document.getElementById('pending-users-list');
+            listDiv.innerHTML = '';
+            
+            const pendingUsers = globalUsers.filter(u => u.role !== 'admin' && u.status === 'pending');
+            
+            if (pendingUsers.length === 0) {
+                listDiv.innerHTML = '<p style="text-align:center; color:#888;">কোনো পেন্ডিং ইউজার নেই।</p>';
+                return;
+            }
 
-                        userDiv.onclick = () => {
-                            document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
-                            userDiv.classList.add('active');
-                            adminPlaceholder.classList.add('hidden'); 
-                            chatForm.classList.remove('hidden'); 
-                            
-                            currentSelectedUser = userData;
-                            
-                            chatTitleDisplay.innerText = `${userData.name}`;
-                            document.getElementById('header-avatar').src = userData.photoURL || DEFAULT_AVATAR;
-                            currentChatRoomId = userData.uid;
-                            
-                            mainLayout.classList.add('mobile-chat-active');
-                            loadChatMessages(currentChatRoomId);
-                        };
-                        
-                        // এলিমেন্ট তৈরি হওয়ার পর কন্টেইনারে অ্যাপেন্ড করা হলো
-                        userListContainer.appendChild(userDiv);
-                    }
-                });
+            let catOptionsHtml = globalCategories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            if (globalCategories.length === 0) catOptionsHtml = `<option value="General">General</option>`;
+
+            pendingUsers.forEach(u => {
+                const row = document.createElement('div');
+                row.className = 'pending-row';
+                row.innerHTML = `
+                    <div class="pending-info">
+                        <img src="${u.photoURL || DEFAULT_AVATAR}">
+                        <div>
+                            <strong>${u.name}</strong>
+                            <small style="color:#666;">${u.email}</small>
+                        </div>
+                    </div>
+                    <div class="pending-controls">
+                        <select id="cat-select-${u.uid}">
+                            ${catOptionsHtml}
+                        </select>
+                        <button onclick="approveUser('${u.uid}')">Approve</button>
+                    </div>
+                `;
+                listDiv.appendChild(row);
             });
         }
 
+        window.approveUser = async function(uid) {
+            const selCategory = document.getElementById(`cat-select-${uid}`).value;
+            try {
+                await updateDoc(doc(dbFirestore, "Users", uid), {
+                    status: "approved",
+                    category: selCategory
+                });
+                alert("ইউজার সফলভাবে অ্যাপ্রুভ হয়েছে!");
+            } catch (e) { alert("Error: " + e.message); }
+        }
+
+        // --- এডমিন সাইডবার ও ক্যাটাগরি লজিক ---
+        
+        // সব ইউজারের মেসেজ ট্র্যাক করার জন্য একটি গ্লোবাল লিসেনার
+        function setupAdminListeners() {
+            const approvedUsers = globalUsers.filter(u => u.role !== 'admin' && (u.status === 'approved' || !u.status));
+            
+            approvedUsers.forEach(userData => {
+                if(!activeChatListenersMap[userData.uid]) {
+                    activeChatListenersMap[userData.uid] = true;
+                    const chatRef = ref(db, `chats/${userData.uid}`);
+                    
+                    onValue(chatRef, (msgSnap) => {
+                        let unreadCount = 0;
+                        let lastMsgTime = 0;
+
+                        if(msgSnap.exists()) {
+                            msgSnap.forEach(child => {
+                                const m = child.val();
+                                if(!m.deletedBy || !m.deletedBy[auth.currentUser.uid]) {
+                                    if (m.timestamp > lastMsgTime) lastMsgTime = m.timestamp;
+                                    if (m.uid !== auth.currentUser.uid && m.status !== 'seen') {
+                                        unreadCount++;
+                                    }
+                                }
+                            });
+                        }
+                        
+                        userUnreadData[userData.uid] = { unread: unreadCount, lastMsgTime: lastMsgTime };
+                        renderAdminSidebar(); 
+                        if(currentlyOpenCategory) updateUsersInCatUI();
+                    });
+                }
+            });
+        }
+
+        function renderAdminSidebar() {
+            // যদি কোনো ক্যাটাগরির ভেতরে না থাকে, তাহলে ক্যাটাগরি লিস্ট আপডেট করবে
+            const catListView = document.getElementById('category-list-view');
+            catListView.innerHTML = '';
+
+            const approvedUsers = globalUsers.filter(u => u.role !== 'admin' && (u.status === 'approved' || !u.status));
+
+            // ক্যাটাগরি গুলো লিস্ট আকারে রেন্ডার করা
+            globalCategories.forEach(catObj => {
+                const catName = catObj.name;
+                const catPhoto = catObj.photoURL || DEFAULT_AVATAR;
+
+                const usersInCat = approvedUsers.filter(u => (u.category === catName) || (!u.category && catName === 'General Support'));
+
+                let totalUnread = 0;
+                let catLastMsgTime = 0;
+
+                usersInCat.forEach(u => {
+                    if(userUnreadData[u.uid]) {
+                        totalUnread += userUnreadData[u.uid].unread;
+                        if(userUnreadData[u.uid].lastMsgTime > catLastMsgTime) {
+                            catLastMsgTime = userUnreadData[u.uid].lastMsgTime;
+                        }
+                    }
+                });
+
+                const catDiv = document.createElement('div');
+                catDiv.className = 'cat-item';
+                catDiv.style.order = catLastMsgTime > 0 ? -catLastMsgTime : 0; 
+                
+                catDiv.innerHTML = `
+                    <img src="${catPhoto}">
+                    <div class="cat-item-info">
+                        <div class="cat-item-name">${catName}</div>
+                        <div style="font-size:12px; color:#888;">${usersInCat.length} Users</div>
+                    </div>
+                    <div class="unread-badge ${totalUnread > 0 ? '' : 'hidden'}">${totalUnread}</div>
+                `;
+
+                catDiv.onclick = () => openCategoryUsers(catName);
+                catListView.appendChild(catDiv);
+            });
+        }
+
+        function openCategoryUsers(catName) {
+            document.getElementById('category-list-view').classList.add('hidden');
+            document.getElementById('category-users-view').classList.remove('hidden');
+            document.getElementById('cat-view-title').innerText = catName;
+            currentlyOpenCategory = catName;
+
+            updateUsersInCatUI();
+        }
+
+        document.getElementById('back-to-cat-btn').addEventListener('click', () => {
+            document.getElementById('category-users-view').classList.add('hidden');
+            document.getElementById('category-list-view').classList.remove('hidden');
+            currentlyOpenCategory = null;
+        });
+
+        // ক্যাটাগরির ভেতরের ইউজার লিস্ট রেন্ডার
+        function updateUsersInCatUI() {
+            if(!currentlyOpenCategory) return;
+            const catUserList = document.getElementById('cat-user-list');
+            catUserList.innerHTML = '';
+
+            const approvedUsers = globalUsers.filter(u => u.role !== 'admin' && (u.status === 'approved' || !u.status));
+            const usersInCat = approvedUsers.filter(u => (u.category === currentlyOpenCategory) || (!u.category && currentlyOpenCategory === 'General Support'));
+
+            if(usersInCat.length === 0) {
+                catUserList.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">এই ক্যাটাগরিতে কোনো ইউজার নেই।</p>';
+                return;
+            }
+
+            usersInCat.forEach(userData => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'user-item';
+                if(currentChatRoomId === userData.uid) userDiv.classList.add('active');
+
+                let unreadCount = userUnreadData[userData.uid]?.unread || 0;
+                let lastMsgTime = userUnreadData[userData.uid]?.lastMsgTime || 0;
+
+                userDiv.style.order = lastMsgTime > 0 ? -lastMsgTime : 0;
+
+                userDiv.innerHTML = `
+                    <img src="${userData.photoURL || DEFAULT_AVATAR}">
+                    <div class="user-item-info">
+                        <div class="user-item-name">${userData.name || 'Unknown'}</div>
+                    </div>
+                    <div class="unread-badge ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</div>
+                `;
+
+                userDiv.onclick = () => {
+                    document.querySelectorAll('#cat-user-list .user-item').forEach(el => el.classList.remove('active'));
+                    userDiv.classList.add('active');
+                    adminPlaceholder.classList.add('hidden');
+                    chatForm.classList.remove('hidden');
+
+                    currentSelectedUser = userData;
+                    chatTitleDisplay.innerText = `${userData.name}`;
+                    document.getElementById('header-avatar').src = userData.photoURL || DEFAULT_AVATAR;
+                    currentChatRoomId = userData.uid;
+
+                    mainLayout.classList.add('mobile-chat-active');
+                    loadChatMessages(currentChatRoomId);
+                };
+
+                catUserList.appendChild(userDiv);
+            });
+        }
+
+        // --- Broadcast (Send to All) Logic ---
+        document.getElementById('btn-broadcast').addEventListener('click', () => {
+            if(!currentlyOpenCategory) return;
+            document.getElementById('broadcast-cat-name').innerText = currentlyOpenCategory;
+            document.getElementById('broadcast-text').value = '';
+            document.getElementById('broadcast-img').value = '';
+            document.getElementById('broadcast-file-name').innerHTML = `📷 ছবি সংযুক্ত করুন (ঐচ্ছিক)`;
+            document.getElementById('broadcast-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('send-broadcast-btn').addEventListener('click', async () => {
+            const text = document.getElementById('broadcast-text').value.trim();
+            const imgInput = document.getElementById('broadcast-img');
+
+            if(!text && imgInput.files.length === 0) return alert("দয়া করে মেসেজ বা ছবি যুক্ত করুন!");
+
+            const loader = document.getElementById('broadcast-loader');
+            const btn = document.getElementById('send-broadcast-btn');
+            loader.classList.remove('hidden');
+            btn.disabled = true;
+
+            try {
+                let imageUrl = null;
+                if(imgInput.files.length > 0) {
+                    const comp = await compressImage(imgInput.files[0], 2);
+                    imageUrl = await uploadImageToImgBB(comp);
+                }
+
+                const approvedUsers = globalUsers.filter(u => u.role !== 'admin' && (u.status === 'approved' || !u.status));
+                const usersInCat = approvedUsers.filter(u => (u.category === currentlyOpenCategory) || (!u.category && currentlyOpenCategory === 'General Support'));
+
+                // সব ইউজারের চ্যাট রুমে একসাথে মেসেজ পুশ করা
+                const promises = usersInCat.map(u => {
+                    return push(ref(db, `chats/${u.uid}`), {
+                        text: text,
+                        imageUrl: imageUrl,
+                        senderName: auth.currentUser.displayName || "Admin",
+                        photoURL: auth.currentUser.photoURL || DEFAULT_AVATAR,
+                        uid: auth.currentUser.uid,
+                        role: "admin",
+                        timestamp: Date.now(),
+                        status: "sent"
+                    });
+                });
+
+                await Promise.all(promises);
+                alert("এই ক্যাটাগরির সবার কাছে সফলভাবে মেসেজ পাঠানো হয়েছে! ✅");
+                document.getElementById('broadcast-modal').classList.add('hidden');
+            } catch (error) {
+                alert("মেসেজ পাঠাতে সমস্যা হচ্ছে: " + error.message);
+            }
+
+            loader.classList.add('hidden');
+            btn.disabled = false;
+        });
+
+
+        // --- মোবাইল ব্যাক বাটন ---
         document.getElementById('mobile-back-btn').addEventListener('click', () => {
             mainLayout.classList.remove('mobile-chat-active');
             adminPlaceholder.classList.remove('hidden'); 
+            document.getElementById('placeholder-text').innerText = "💬 মেসেজ দেখার জন্য ইউজার সিলেক্ট করুন";
             chatForm.classList.add('hidden'); 
             chatTitleDisplay.innerText = "সাপোর্ট চ্যাট প্যানেল";
-            document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#cat-user-list .user-item').forEach(el => el.classList.remove('active'));
             currentChatRoomId = null;
             currentSelectedUser = null;
         });
@@ -604,7 +978,7 @@
                     
                     // ইমেজে ক্লিক করলে ইন-অ্যাপ মডালে ওপেন হবে
                     imgElement.onclick = (e) => {
-                        e.stopPropagation(); // Long press বাধা দিতে
+                        e.stopPropagation(); 
                         document.getElementById('full-image-preview').src = data.imageUrl;
                         document.getElementById('image-modal').classList.remove('hidden');
                     };
@@ -637,7 +1011,7 @@
                 if(isMyMessage){ rowDiv.appendChild(msgBox); rowDiv.appendChild(avatarImg); } 
                 else { rowDiv.appendChild(avatarImg); rowDiv.appendChild(msgBox); }
                 
-                // লং প্রেস (Touch/Mouse) ইভেন্টস - ডিলিট অপশনের জন্য
+                // লং প্রেস ইভেন্টস
                 let isScrolling = false;
                 msgBox.addEventListener('touchstart', (e) => {
                     isScrolling = false;
@@ -655,8 +1029,6 @@
                 });
                 msgBox.addEventListener('mouseup', () => clearTimeout(pressTimer));
                 msgBox.addEventListener('mouseleave', () => clearTimeout(pressTimer));
-                
-                // ডেস্কটপে রাইট ক্লিক (Context Menu)
                 msgBox.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
                     showDeleteOptions(msgKey, roomId, isMyMessage, rowDiv);
@@ -669,7 +1041,6 @@
             const changedListener = onChildChanged(chatRef, (snapshot) => {
                 const data = snapshot.val();
                 
-                // যদি মেসেজ আমার জন্য ডিলিট করা হয়, তা হলে UI থেকে হাইড করে দিবো
                 if(data.deletedBy && data.deletedBy[auth.currentUser.uid]) {
                     const row = document.getElementById(`msg-${snapshot.key}`)?.closest('.msg-row');
                     if(row) row.remove();
@@ -688,7 +1059,7 @@
                         hours = hours % 12; hours = hours ? hours : 12; 
                         minutes = minutes < 10 ? '0' + minutes : minutes;
                         const timeStr = hours + ':' + minutes + ' ' + ampm;
-
+ 
                         let tickStr = '';
                         if (isMyMessage) tickStr = data.status === 'seen' ? '✅✅' : '✅';
                         
@@ -697,7 +1068,6 @@
                 }
             });
 
-            // ডাটাবেস থেকে মেসেজ রিমুভ হলে রিয়েল-টাইমে UI থেকে সরানো (Delete for everyone)
             const removedListener = onChildRemoved(chatRef, (snapshot) => {
                 const row = document.getElementById(`msg-${snapshot.key}`)?.closest('.msg-row');
                 if(row) row.remove();
@@ -716,11 +1086,10 @@
             if(!selectedMsgForDelete) return;
             const { key, room, node } = selectedMsgForDelete;
             try {
-                // ফায়ারবেসে 'deletedBy' তে ইউজারের uid সেভ করা
                 await update(ref(db, `chats/${room}/${key}/deletedBy`), {
                     [auth.currentUser.uid]: true
                 });
-                node.remove(); // UI থেকে মুছে ফেলা
+                node.remove(); 
             } catch (e) { console.error("ডিলিট করতে এরর: ", e); }
             document.getElementById('delete-modal').classList.add('hidden');
             selectedMsgForDelete = null;
@@ -730,7 +1099,6 @@
             if(!selectedMsgForDelete) return;
             const { key, room, node } = selectedMsgForDelete;
             try {
-                // ফায়ারবেস ডাটাবেস থেকে মেসেজ সম্পূর্ণ ডিলিট
                 await remove(ref(db, `chats/${room}/${key}`));
                 node.remove(); 
             } catch (e) { console.error("ডিলিট করতে এরর: ", e); }
@@ -738,7 +1106,6 @@
             selectedMsgForDelete = null;
         });
 
-        // --- Image Viewer Close Action ---
         document.getElementById('close-image-btn').addEventListener('click', () => {
             document.getElementById('image-modal').classList.add('hidden');
         });
@@ -795,7 +1162,6 @@
             }
         });
 
-        // --- হেডার প্রোফাইল ক্লিক লজিক ---
         document.getElementById('open-profile-btn').addEventListener('click', () => {
             if (currentUserRole === 'admin' && currentSelectedUser) {
                 document.getElementById('info-avatar-img').src = currentSelectedUser.photoURL || DEFAULT_AVATAR;
@@ -864,7 +1230,16 @@
             }
             btn.innerText = "সেভ করুন";
         });
-
+// ব্রডকাস্ট ছবি সিলেক্ট হলে বুঝতে পারার জন্য
+document.getElementById('broadcast-img').addEventListener('change', function(e) {
+    const fileNameSpan = document.getElementById('broadcast-file-name');
+    if (this.files && this.files.length > 0) {
+        // ছবি সিলেক্ট হলে ফাইলের নাম ও টিক চিহ্ন দেখাবে
+        fileNameSpan.innerHTML = `✅ ছবি যুক্ত হয়েছে: ${this.files[0].name}`;
+    } else {
+        fileNameSpan.innerHTML = `📷 ছবি সংযুক্ত করুন (ঐচ্ছিক)`;
+    }
+});
     </script>
 </body>
 </html>
