@@ -185,6 +185,57 @@
         #back-to-cat-btn:hover { background: #C850C0; color: white; }
         #btn-broadcast { background: linear-gradient(135deg, #4158D0, #C850C0); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(200,80,192,0.3); font-family: 'Poppins'; }
 
+        /* ========================================= */
+        /* --- DEVELOPER FOOTER CSS --- */
+        /* ========================================= */
+        .dev-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .dev-logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid #C850C0;
+            padding: 2px;
+        }
+        .dev-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #C850C0;
+            margin-bottom: 2px;
+        }
+        .app-version {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .social-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .social-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .fb-bg { background: #1877F2; }
+        .wa-bg { background: #25D366; }
+        .tg-bg { background: #0088cc; }
+
 
         /* ========================================= */
         /* --- NEW THEMES CSS (Light & Dark) --- */
@@ -232,7 +283,7 @@
         body.theme-light #reply-preview { background: #f8fafc; border-left: 4px solid #0f172a; }
         body.theme-light #reply-name { color: #0f172a !important; }
         
-        body.theme-light .avatar, body.theme-light .modal-avatar { border-color: #cbd5e1; }
+        body.theme-light .avatar, body.theme-light .modal-avatar, body.theme-light .dev-logo { border-color: #cbd5e1; }
         body.theme-light h2, body.theme-light h3, body.theme-light strong, body.theme-light #chat-title-display { color: #0f172a !important; }
         
         body.theme-light .chat-file { background: #e2e8f0; color: #0f172a; }
@@ -300,8 +351,9 @@
         body.theme-dark .my-msg .chat-file { background: rgba(255,255,255,0.2); }
         body.theme-dark .my-msg .chat-file:hover { background: rgba(255,255,255,0.3); }
         
-        body.theme-dark .modal-email { color: #94a3b8; }
-        body.theme-dark .avatar, body.theme-dark .modal-avatar { border-color: #6366f1; }
+        body.theme-dark .modal-email, body.theme-dark .app-version { color: #94a3b8; }
+        body.theme-dark .dev-footer { border-top-color: rgba(255,255,255,0.1); }
+        body.theme-dark .avatar, body.theme-dark .modal-avatar, body.theme-dark .dev-logo { border-color: #6366f1; }
     </style>
 </head>
 <body>
@@ -440,6 +492,20 @@
             <p id="modal-loader" data-lang-key="wait" class="loader-text hidden"><i class="fa-solid fa-spinner fa-spin"></i> আপলোড হচ্ছে...</p>
             <button class="btn btn-password" id="change-password-btn"><i class="fa-solid fa-key"></i> <span data-lang-key="btnChangePass">পাসওয়ার্ড পরিবর্তন</span></button>
             <button class="btn btn-close" id="close-modal-btn"><i class="fa-solid fa-times"></i> <span data-lang-key="btnClose">বন্ধ করুন</span></button>
+
+            <!-- DEVELOPER SECTION -->
+            <div class="dev-footer">
+                <img src="https://i.ibb.co.com/0y9W4G0B/IMG-20260112-194542.jpg" class="dev-logo" alt="Piyash">
+                <div class="dev-name">Developed by 🌟 PIYASH 🌟</div>
+                <div class="app-version">App Version 1.0.0 | &copy; 2026 Premium Chat</div>
+                
+                <div class="contact-label" style="font-size:12px; margin-top:12px; margin-bottom:10px; opacity:0.8;">Contact Developer</div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/piyashhasan.ph" target="_blank" class="social-btn fb-bg"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/+8801325428923" target="_blank" class="social-btn wa-bg"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/piyashhasan_ph564" target="_blank" class="social-btn tg-bg"><i class="fab fa-telegram-plane"></i></a>
+                </div>
+            </div>
         </div>
     </div>
 
