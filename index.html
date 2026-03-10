@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Premium Chat Room</title>
     
+    <!-- PWA / Add to Home Screen Meta Tags -->
+    <meta name="theme-color" content="#4158D0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+   <!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" href="https://i.ibb.co.com/mrhJHz3p/20260310-193411.png">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"Premium Chat","short_name":"PremiumChat","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#4158D0","icons":[{"src":"https://i.ibb.co.com/gb2Fctvb/20260310-194023.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co.com/qFPBP61m/20260310-194150.jpg","sizes":"512x512","type":"image/png"}]}'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,7 +23,6 @@
         
         body { 
             font-family: 'Poppins', sans-serif; 
-            /* Enhanced Color Theme (More Colorful) */
             background: linear-gradient(-45deg, #4158D0, #C850C0, #FFCC70, #ff0844, #00d2ff);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -39,7 +47,7 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.6); /* More transparent to show colors */
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -87,6 +95,15 @@
         #category-list-view, #category-users-view { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
         #cat-user-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; }
         
+        /* New CSS for Online/Offline & Typing */
+        .avatar-container { position: relative; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .status-dot { position: absolute; bottom: 2px; right: 2px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; z-index: 2; transition: 0.3s; }
+        .status-online { background: #22c55e; box-shadow: 0 0 5px rgba(34,197,94,0.5); }
+        .status-offline { background: #94a3b8; }
+        .last-msg-preview { font-size: 13px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+        .typing-text { color: #22c55e; font-style: italic; font-weight: 500; font-size: 13px; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
         .cat-item, .user-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.03); cursor: pointer; transition: 0.3s; }
         .cat-item:hover, .user-item:hover { background: rgba(255,255,255,0.8); }
         .user-item.active { background: rgba(65, 88, 208, 0.15); border-left: 4px solid #4158D0; }
@@ -180,14 +197,13 @@
         .pending-controls button { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; border: none; padding: 8px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.3s; font-family: 'Poppins'; display: flex; align-items: center; justify-content: center; gap: 5px; }
         
         .category-top-bar { background: rgba(255,255,255,0.7); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(10px); flex-shrink: 0; }
-        .cat-view-title-wrap { display: flex; align-items: center; gap: 12px; }
+        .cat-view-title-wrap { display: flex; align-items: center; gap: 10px; padding: 5px 10px; border-radius: 8px; transition: 0.3s; }
+        .cat-view-title-wrap:hover { background: rgba(0,0,0,0.05); }
         #back-to-cat-btn { background: #f1f5f9; width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; font-size: 16px; color: #475569; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         #back-to-cat-btn:hover { background: #C850C0; color: white; }
         #btn-broadcast { background: linear-gradient(135deg, #4158D0, #C850C0); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(200,80,192,0.3); font-family: 'Poppins'; }
 
-        /* ========================================= */
         /* --- DEVELOPER FOOTER CSS --- */
-        /* ========================================= */
         .dev-footer {
             margin-top: 25px;
             padding-top: 20px;
@@ -214,11 +230,7 @@
             color: #64748b;
             margin-bottom: 12px;
         }
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
+        .social-icons { display: flex; justify-content: center; gap: 12px; }
         .social-btn {
             width: 32px;
             height: 32px;
@@ -237,123 +249,111 @@
         .tg-bg { background: #0088cc; }
 
 
-        /* ========================================= */
         /* --- NEW THEMES CSS (Light & Dark) --- */
-        /* ========================================= */
-
-        /* Light Theme (Clean, No Colors, Slate Focus) */
-        body.theme-light { background: #f8fafc; animation: none; color: #334155; }
-        body.theme-light .glass-panel { background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08); backdrop-filter: none; -webkit-backdrop-filter: none; }
+        body.theme-light { background: #e2e8f0; animation: none; color: #334155; }
+        body.theme-light .glass-panel { background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; backdrop-filter: none; -webkit-backdrop-filter: none; }
         
-        body.theme-light #admin-sidebar, body.theme-light #chat-container { background: #ffffff; }
-        body.theme-light #admin-sidebar-header, body.theme-light #chat-header, body.theme-light .category-top-bar, body.theme-light #chat-form-container { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        body.theme-light #admin-sidebar { background: #ffffff; border-right: 1px solid #cbd5e1 !important; }
+        body.theme-light #chat-container { background: #ffffff; }
+        body.theme-light #admin-sidebar-header, body.theme-light #chat-header, body.theme-light .category-top-bar, body.theme-light #chat-form-container { background: #ffffff; border-color: #cbd5e1 !important; }
+        
+        body.theme-light .cat-item, body.theme-light .user-item { border-bottom: 1px solid #e2e8f0 !important; }
+        
         body.theme-light #admin-placeholder { background: #f8fafc; }
-
         body.theme-light .input-field { background: #f1f5f9; border: 1px solid #cbd5e1; color: #0f172a; }
         body.theme-light .input-field:focus { background: #ffffff; border-color: #64748b; box-shadow: 0 0 0 3px rgba(100,116,139,0.15); }
-        
-        /* Buttons - Pure Slate for Light Theme */
         body.theme-light .auth-btn, body.theme-light .send-btn, body.theme-light .btn-save, body.theme-light #btn-broadcast { background: #0f172a; color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         body.theme-light .auth-btn:hover, body.theme-light .send-btn:hover, body.theme-light .btn-save:hover, body.theme-light #btn-broadcast:hover { background: #1e293b; box-shadow: 0 6px 15px rgba(0,0,0,0.12); transform: translateY(-2px); }
-        
         body.theme-light .btn-upload { background: #f8fafc; color: #475569; border: 1px dashed #cbd5e1; }
         body.theme-light .btn-upload:hover { background: #f1f5f9; color: #0f172a; border-color: #64748b; }
-        
-        /* Chat Messages */
         body.theme-light .my-msg { background: #0f172a; color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        body.theme-light .other-msg { background: #f8fafc; border: 1px solid #e2e8f0; color: #1e293b; }
+        body.theme-light .other-msg { background: #f8fafc; border: 1px solid #cbd5e1; color: #1e293b; }
         body.theme-light .unread-badge { background: #ef4444; box-shadow: none; color: white; }
-        
-        /* Hovers and Accents */
         body.theme-light .toggle-text { color: #475569; }
         body.theme-light .toggle-text:hover { color: #0f172a; }
-        
         body.theme-light .action-btn { background: #f1f5f9; color: #64748b; }
         body.theme-light .action-btn:hover { background: #e2e8f0; color: #0f172a; }
         body.theme-light #chat-input { background: #f1f5f9; border: 1px solid transparent; }
         body.theme-light #chat-input:focus { background: #ffffff; border-color: #cbd5e1; }
-        
         body.theme-light #admin-menu-toggle:hover, body.theme-light #mobile-back-btn:hover, body.theme-light #back-to-cat-btn:hover { color: #0f172a; }
         body.theme-light #back-to-cat-btn:hover { background: #e2e8f0; }
-        
         body.theme-light .dropdown-item:hover { background: #f1f5f9; color: #0f172a; }
-        body.theme-light .cat-item:hover, body.theme-light .user-item:hover { background: #f8fafc; }
-        body.theme-light .user-item.active { background: #f1f5f9; border-left: 4px solid #0f172a; }
         
+        body.theme-light .cat-item:hover, body.theme-light .user-item:hover { background: #f1f5f9; }
+        body.theme-light .user-item.active { background: #e2e8f0; border-left: 4px solid #0f172a; }
+        
+        body.theme-light .cat-view-title-wrap:hover { background: rgba(0,0,0,0.05); }
         body.theme-light #reply-preview { background: #f8fafc; border-left: 4px solid #0f172a; }
         body.theme-light #reply-name { color: #0f172a !important; }
-        
         body.theme-light .avatar, body.theme-light .modal-avatar, body.theme-light .dev-logo { border-color: #cbd5e1; }
         body.theme-light h2, body.theme-light h3, body.theme-light strong, body.theme-light #chat-title-display { color: #0f172a !important; }
-        
         body.theme-light .chat-file { background: #e2e8f0; color: #0f172a; }
         body.theme-light .chat-file:hover { background: #cbd5e1; }
         body.theme-light .my-msg .chat-file { background: rgba(255,255,255,0.15); color: #ffffff; }
         body.theme-light .my-msg .chat-file:hover { background: rgba(255,255,255,0.25); }
+        body.theme-light #manage-cat-user-list { background: #f8fafc !important; border-color: #cbd5e1 !important; }
+        body.theme-light #manage-cat-user-list > div { border-bottom-color: #e2e8f0 !important; }
+        body.theme-light .pending-row { border-color: #cbd5e1 !important; background: #f8fafc; }
+        body.theme-light .status-dot { border-color: #fff; }
 
-
-        /* Dark Theme (With Indigo Accents) */
         body.theme-dark { background: #0f172a; color: #f1f5f9; animation: none; }
         body.theme-dark .glass-panel { background: rgba(30, 41, 59, 0.95); border-color: rgba(255,255,255,0.05); box-shadow: 0 8px 32px rgba(0,0,0,0.3); backdrop-filter: none; -webkit-backdrop-filter: none; }
-        
         body.theme-dark h2, body.theme-dark .modal-content h3, body.theme-dark strong, body.theme-dark #chat-title-display { color: #f8fafc !important; }
         body.theme-dark .input-field { background: rgba(15, 23, 42, 0.8); color: #f8fafc; border-color: rgba(255,255,255,0.1); }
         body.theme-dark .input-field:focus { background: #1e293b; border-color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
         body.theme-dark select option { background: #1e293b; color: #f8fafc; }
-        
-        /* Dark Theme Buttons & Accents */
         body.theme-dark .auth-btn, body.theme-dark .send-btn, body.theme-dark .btn-save, body.theme-dark #btn-broadcast { background: #6366f1; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); color: white; }
         body.theme-dark .auth-btn:hover, body.theme-dark .send-btn:hover, body.theme-dark .btn-save:hover, body.theme-dark #btn-broadcast:hover { background: #4f46e5; box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); transform: translateY(-2px); }
-        
         body.theme-dark .toggle-text { color: #818cf8; }
         body.theme-dark .toggle-text:hover { color: #6366f1; }
         body.theme-dark #admin-sidebar { background: rgba(30, 41, 59, 0.95); border-right-color: rgba(255,255,255,0.05); }
         body.theme-dark #admin-sidebar-header, body.theme-dark #chat-header, body.theme-dark .category-top-bar { background: rgba(15, 23, 42, 0.9); border-bottom-color: rgba(255,255,255,0.05); }
-        body.theme-dark #admin-menu-toggle, body.theme-dark #back-to-cat-btn, body.theme-dark #mobile-back-btn { color: #f8fafc; }
-        body.theme-dark #back-to-cat-btn:hover { background: #1e293b; }
         
+        body.theme-dark #admin-menu-toggle, body.theme-dark #mobile-back-btn { color: #f8fafc; }
+        body.theme-dark #back-to-cat-btn { background: #334155; color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); }
+        body.theme-dark #back-to-cat-btn:hover { background: #475569; }
+
         body.theme-dark #admin-dropdown-menu { background: rgba(30, 41, 59, 0.95); border-color: rgba(255,255,255,0.1); }
         body.theme-dark .dropdown-item { color: #cbd5e1; }
         body.theme-dark .dropdown-item:hover { background: rgba(255,255,255,0.05); color: #818cf8; }
-        
         body.theme-dark .cat-item:hover, body.theme-dark .user-item:hover { background: rgba(255,255,255,0.05); }
         body.theme-dark .user-item.active { background: rgba(99, 102, 241, 0.1); border-left: 4px solid #6366f1; }
         body.theme-dark .cat-item-name, body.theme-dark .user-item-name { color: #f8fafc; }
-        
+        body.theme-dark .cat-view-title-wrap:hover { background: rgba(255,255,255,0.05); }
         body.theme-dark #chat-container { background: rgba(15, 23, 42, 0.6); }
         body.theme-dark .my-msg { background: #6366f1; color: #ffffff; }
         body.theme-dark .other-msg { background: #1e293b; color: #f8fafc; border-color: rgba(255,255,255,0.05); }
         body.theme-dark .msg-meta { color: #94a3b8; }
         body.theme-dark .unread-badge { background: #ef4444; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4); }
-        
         body.theme-dark #chat-form-container { background: rgba(30, 41, 59, 0.95); border-top-color: rgba(255,255,255,0.05); }
         body.theme-dark #chat-input { background: rgba(15, 23, 42, 0.8); color: #f8fafc; border-color: transparent; }
         body.theme-dark #chat-input:focus { border-color: rgba(255,255,255,0.1); }
         body.theme-dark .action-btn { background: #334155; color: #cbd5e1; }
         body.theme-dark .action-btn:hover { background: #475569; color: #818cf8; }
-        
         body.theme-dark #admin-placeholder { background: rgba(15, 23, 42, 0.9); }
         body.theme-dark #reply-preview { background: #1e293b; border-left-color: #6366f1; }
         body.theme-dark #reply-name { color: #818cf8 !important; }
         body.theme-dark #reply-text { color: #94a3b8 !important; }
-        
         body.theme-dark .btn-close { background: #334155; color: #cbd5e1; }
         body.theme-dark .btn-close:hover { background: #475569; }
-        
         body.theme-dark .pending-row { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.05); }
         body.theme-dark .pending-controls select { background: rgba(15, 23, 42, 0.8); color: #f8fafc; border-color: rgba(255,255,255,0.2); }
-        
         body.theme-dark .btn-upload { color: #818cf8; border-color: #6366f1; background: rgba(99, 102, 241, 0.1); }
         body.theme-dark .btn-upload:hover { background: #6366f1; color: white; }
-        
         body.theme-dark .chat-file { background: rgba(255,255,255,0.1); color: #f8fafc; }
         body.theme-dark .chat-file:hover { background: rgba(255,255,255,0.15); }
         body.theme-dark .my-msg .chat-file { background: rgba(255,255,255,0.2); }
         body.theme-dark .my-msg .chat-file:hover { background: rgba(255,255,255,0.3); }
-        
         body.theme-dark .modal-email, body.theme-dark .app-version { color: #94a3b8; }
         body.theme-dark .dev-footer { border-top-color: rgba(255,255,255,0.1); }
         body.theme-dark .avatar, body.theme-dark .modal-avatar, body.theme-dark .dev-logo { border-color: #6366f1; }
+        
+        body.theme-dark #manage-cat-user-list { background: rgba(15, 23, 42, 0.6) !important; border-color: rgba(255,255,255,0.1) !important; }
+        body.theme-dark #manage-cat-user-list strong { color: #f8fafc !important; }
+        body.theme-dark #manage-cat-user-list small { color: #94a3b8 !important; }
+        body.theme-dark #manage-cat-user-list > div { border-bottom-color: rgba(255,255,255,0.05) !important; }
+        body.theme-dark .status-dot { border-color: rgba(30, 41, 59, 0.95); }
+        body.theme-dark .last-msg-preview { color: #94a3b8; }
     </style>
 </head>
 <body>
@@ -380,7 +380,10 @@
         <div id="admin-sidebar" class="hidden">
             <div id="admin-sidebar-header">
                 <div class="header-profile" id="admin-open-profile-btn" title="Profile">
-                    <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="admin-header-avatar" class="avatar" alt="Profile">
+                    <div class="avatar-container" style="margin-right:10px;">
+                        <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="admin-header-avatar" class="avatar" alt="Profile" style="margin:0;">
+                        <div class="status-dot status-online"></div>
+                    </div>
                     <div>
                         <strong style="font-size: 16px; color: #1e293b;" data-lang-key="supportPanel">সাপোর্ট প্যানেল</strong> <br>
                         <small id="admin-name-display" style="color: #64748b; font-weight: 500;"></small>
@@ -400,11 +403,12 @@
             
             <div id="category-users-view" class="hidden">
                 <div class="category-top-bar">
-                    <div class="cat-view-title-wrap">
-                        <button id="back-to-cat-btn" title="Back"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button id="back-to-cat-btn" title="Back" style="flex-shrink: 0;"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="cat-view-title-wrap" id="open-cat-manage-btn" title="Manage Category" style="cursor: pointer; flex-grow: 1; margin-left: 10px; margin-right: auto; justify-content: flex-start;">
+                        <img id="cat-view-img" src="" class="avatar" style="width: 35px; height: 35px; border-width: 1px;">
                         <strong id="cat-view-title" style="font-size: 15px; color: #1e293b;">Category Name</strong>
                     </div>
-                    <button id="btn-broadcast"><i class="fa-solid fa-bullhorn"></i> <span data-lang-key="sendAll">Send All</span></button>
+                    <button id="btn-broadcast" style="flex-shrink: 0;"><i class="fa-solid fa-bullhorn"></i> <span data-lang-key="sendAll">Send All</span></button>
                 </div>
                 <div id="cat-user-list"></div>
             </div>
@@ -421,7 +425,10 @@
                 <div class="header-left">
                     <button id="mobile-back-btn" title="Back"><i class="fa-solid fa-arrow-left"></i></button>
                     <div class="header-profile" id="open-profile-btn" title="Profile">
-                        <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="header-avatar" class="avatar" alt="Profile">
+                        <div class="avatar-container" style="margin-right:10px;">
+                            <img src="https://i.ibb.co/4pDNDk1/avatar.png" id="header-avatar" class="avatar" alt="Profile" style="margin:0;">
+                            <div id="header-status-dot" class="status-dot hidden"></div>
+                        </div>
                         <div>
                             <strong style="font-size: 18px; color: #1e293b;" id="chat-title-display">সাপোর্ট চ্যাট</strong> <br>
                             <small id="user-name-display" style="color: #64748b; font-weight: 500;"></small>
@@ -435,7 +442,7 @@
             
             <p id="chat-image-loader" class="loader-text hidden" style="text-align: center; margin-bottom: 10px;"><i class="fa-solid fa-spinner fa-spin"></i> <span data-lang-key="wait">আপলোড হচ্ছে...</span></p>
             
-            <!-- মেসেজ ফর্ম কন্টেইনার (Reply প্রিভিউ সহ) -->
+            <!-- মেসেজ ফর্ম কন্টেইনার -->
             <div id="chat-form-container">
                 <div id="reply-preview" class="hidden">
                     <strong id="reply-name" style="color: #C850C0;"></strong>
@@ -617,12 +624,49 @@
         </div>
     </div>
 
+    <!-- ১১. ক্যাটাগরি ম্যানেজ/সেটিংস মডাল -->
+    <div id="cat-manage-modal" class="modal-overlay hidden" style="z-index: 2400;">
+        <div class="modal-content glass-panel" style="padding: 25px; width: 90%; max-width: 450px;">
+            <h3 style="margin-top:0; color: #C850C0;"><i class="fa-solid fa-folder-gear"></i> <span data-lang-key="manageCatTitle">ক্যাটাগরি সেটিং</span></h3>
+            
+            <img src="" id="manage-cat-img" class="modal-avatar" alt="Category" style="width: 80px; height: 80px; margin-bottom: 10px;">
+            <div class="btn btn-upload" style="margin-bottom: 15px; padding: 10px; font-size: 13px;">
+                <span data-lang-key="catChangePic"><i class="fa-solid fa-camera"></i> ছবি পরিবর্তন করুন</span>
+                <input type="file" id="manage-cat-pic-input" accept="image/*">
+            </div>
+            <p id="manage-cat-loader" class="loader-text hidden"><i class="fa-solid fa-spinner fa-spin"></i> <span data-lang-key="wait">আপলোড হচ্ছে...</span></p>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="text" id="manage-cat-name-input" data-lang-key="catNamePh" class="input-field" placeholder="ক্যাটাগরির নাম" style="margin: 0; flex-grow: 1;">
+                <button class="btn btn-save" id="save-cat-info-btn" style="width: auto; margin: 0; padding: 0 15px;"><i class="fa-solid fa-check"></i></button>
+            </div>
+
+            <hr style="border: 1px solid rgba(0,0,0,0.05); margin: 15px 0;">
+            
+            <h4 style="text-align: left; margin-bottom: 8px; font-size: 14px; color: #64748b;" data-lang-key="addUserTitle"><i class="fa-solid fa-user-plus"></i> ইমেইল দিয়ে ইউজার অ্যাড করুন</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="email" id="add-user-email-input" data-lang-key="userEmailPh" class="input-field" placeholder="ইউজারের ইমেইল" style="margin: 0; flex-grow: 1;">
+                <button class="btn btn-save" id="add-user-cat-btn" style="width: auto; margin: 0; padding: 0 15px;"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <h4 style="text-align: left; margin-bottom: 8px; font-size: 14px; color: #64748b;" data-lang-key="catUserListTitle"><i class="fa-solid fa-users"></i> এই ক্যাটাগরির ইউজার লিস্ট</h4>
+            <div id="manage-cat-user-list" style="max-height: 180px; overflow-y: auto; text-align: left; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px; background: rgba(255,255,255,0.5);">
+                <!-- User rows injected by JS -->
+            </div>
+
+            <hr style="border: 1px solid rgba(0,0,0,0.05); margin: 15px 0;">
+
+            <button class="btn btn-cancel" id="delete-cat-btn" style="margin-bottom: 10px;"><i class="fa-solid fa-trash-can"></i> <span data-lang-key="btnDeleteCat">ক্যাটাগরি ডিলিট করুন</span></button>
+            <button class="btn btn-close" id="close-cat-manage-btn" style="margin-top: 0;"><i class="fa-solid fa-times"></i> <span data-lang-key="btnClose">বন্ধ করুন</span></button>
+        </div>
+    </div>
+
     <!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, updatePassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getDatabase, ref, push, onChildAdded, onChildChanged, onChildRemoved, remove, off, update, query, limitToLast, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getDatabase, ref, push, onChildAdded, onChildChanged, onChildRemoved, remove, off, update, query, limitToLast, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBxbIPqj-k08XckrZaEqbukK7fcyByGchk",
@@ -663,11 +707,17 @@
         let globalUsers =[];      
         let userUnreadData = {}; 
         let currentlyOpenCategory = null; 
+        let currentlyOpenCategoryObj = null; 
         let activeChatListenersMap = {};
 
         let pressTimer;
         let selectedMsgForOptions = null; 
         let currentReplyData = null; 
+
+        // New Global Variables for Presence and Typing
+        let globalPresence = {};
+        let globalTyping = {};
+        let typingTimeout;
 
         // ========================================= //
         // ----- LANGUAGE & TRANSLATION SYSTEM ----- //
@@ -699,8 +749,10 @@
                 lblHintCat: '<i class="fa-solid fa-camera"></i> ক্যাটাগরির ছবি দিন (ঐচ্ছিক)',
                 lblHintBc: '<i class="fa-solid fa-image"></i> ছবি সংযুক্ত করুন (ঐচ্ছিক)',
                 newPassTitle: "নতুন পাসওয়ার্ড", userInfo: "ইউজার ইনফো",
-                
-                // JS Alerts
+                manageCatTitle: "ক্যাটাগরি সেটিং", catChangePic: '<i class="fa-solid fa-camera"></i> ছবি পরিবর্তন করুন',
+                catNamePh: "ক্যাটাগরির নাম", addUserTitle: '<i class="fa-solid fa-user-plus"></i> ইমেইল দিয়ে ইউজার অ্যাড করুন',
+                userEmailPh: "ইউজারের ইমেইল", catUserListTitle: '<i class="fa-solid fa-users"></i> এই ক্যাটাগরির ইউজার লিস্ট',
+                btnDeleteCat: "ক্যাটাগরি ডিলিট করুন",
                 alertCat: "ক্যাটাগরির নাম লিখুন!", alertCatOk: "ক্যাটাগরি সফলভাবে যুক্ত হয়েছে!",
                 alertAppr: "ইউজার সফলভাবে অ্যাপ্রুভ হয়েছে!", alertBcImg: "দয়া করে মেসেজ বা ছবি যুক্ত করুন!",
                 alertBcOk: "মেসেজ সফলভাবে পাঠানো হয়েছে!", alertCopy: "টেক্সট কপি করা হয়েছে!",
@@ -735,8 +787,10 @@
                 lblHintCat: '<i class="fa-solid fa-camera"></i> Category Image (Optional)',
                 lblHintBc: '<i class="fa-solid fa-image"></i> Attach Image (Optional)',
                 newPassTitle: "New Password", userInfo: "User Info",
-                
-                // JS Alerts
+                manageCatTitle: "Category Settings", catChangePic: '<i class="fa-solid fa-camera"></i> Change Picture',
+                catNamePh: "Category Name", addUserTitle: '<i class="fa-solid fa-user-plus"></i> Add User by Email',
+                userEmailPh: "User Email", catUserListTitle: '<i class="fa-solid fa-users"></i> Users in this Category',
+                btnDeleteCat: "Delete Category",
                 alertCat: "Enter category name!", alertCatOk: "Category added successfully!",
                 alertAppr: "User approved successfully!", alertBcImg: "Please add message or image!",
                 alertBcOk: "Message sent successfully!", alertCopy: "Text copied!",
@@ -762,7 +816,6 @@
                 }
             });
             
-            // Dynamic text updates
             document.getElementById('auth-submit-btn').innerHTML = isLoginMode ? `<i class="fa-solid fa-right-to-bracket"></i> ${t('btnLogin')}` : `<i class="fa-solid fa-user-plus"></i> ${t('btnReg')}`;
             document.getElementById('toggle-auth').innerText = isLoginMode ? t('toggleReg') : t('toggleLog');
             document.getElementById('auth-title').innerText = isLoginMode ? t('authTitleLog') : t('authTitleReg');
@@ -950,7 +1003,7 @@
 
         function fetchGlobalData() {
             onSnapshot(collection(dbFirestore, "Categories"), (snap) => {
-                globalCategories = snap.docs.map(doc => doc.data());
+                globalCategories = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() })); 
                 if (currentUserRole === 'admin') { renderAdminSidebar(); renderPendingUsers(); }
             });
 
@@ -961,6 +1014,7 @@
                 if (currentUserRole === 'admin') {
                     setupAdminListeners(); renderAdminSidebar(); renderPendingUsers();
                     if(currentlyOpenCategory) updateUsersInCatUI();
+                    if(!document.getElementById('cat-manage-modal').classList.contains('hidden')) renderManageCatUserList();
                 } else if (currentUserRole === 'user') {
                     const myData = globalUsers.find(u => u.uid === auth.currentUser.uid);
                     if (myData) checkUserAccess(myData);
@@ -968,17 +1022,56 @@
             });
         }
 
+        // --- NEW: Header Status Updator ---
+        window.updateChatHeaderStatus = function() {
+            if (!currentChatRoomId) return;
+
+            let statusText = '';
+            const statusDot = document.getElementById('header-status-dot');
+            if(statusDot) statusDot.classList.remove('hidden', 'status-online', 'status-offline');
+
+            if (currentUserRole === 'admin' && currentSelectedUser) {
+                const targetUid = currentSelectedUser.uid;
+                const isTyping = globalTyping[currentChatRoomId] && globalTyping[currentChatRoomId][targetUid];
+                const isOnline = globalPresence[targetUid]?.state === 'online';
+                
+                if(statusDot) statusDot.classList.add(isOnline ? 'status-online' : 'status-offline');
+
+                if (isTyping) statusText = '<span class="typing-text">Typing...</span>';
+                else if (isOnline) statusText = '<span style="color:#22c55e; font-weight:600;">Online</span>';
+                else statusText = '<span style="color:#94a3b8; font-weight:500;">Offline</span>';
+                
+            } else if (currentUserRole === 'user') {
+                let adminTyping = false;
+                if (globalTyping[currentChatRoomId]) {
+                    Object.keys(globalTyping[currentChatRoomId]).forEach(key => {
+                        if (key !== auth.currentUser.uid && globalTyping[currentChatRoomId][key]) adminTyping = true;
+                    });
+                }
+                
+                let adminOnline = false;
+                globalUsers.filter(u => u.role === 'admin').forEach(adm => {
+                    if (globalPresence[adm.uid]?.state === 'online') adminOnline = true;
+                });
+                
+                if(statusDot) statusDot.classList.add(adminOnline ? 'status-online' : 'status-offline');
+
+                if (adminTyping) statusText = '<span class="typing-text">Typing...</span>';
+                else if (adminOnline) statusText = '<span style="color:#22c55e; font-weight:600;">Online</span>';
+                else statusText = '<span style="color:#94a3b8; font-weight:500;">Offline</span>';
+            }
+            
+            const displayEl = document.getElementById('user-name-display');
+            if (displayEl) displayEl.innerHTML = statusText;
+        }
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 authContainer.classList.add('hidden');
                 mainLayout.classList.remove('hidden');
                 
-                document.getElementById('user-name-display').innerText = user.displayName || "User";
                 document.getElementById('header-avatar').src = user.photoURL || DEFAULT_AVATAR;
-                
-                document.getElementById('admin-name-display').innerText = user.displayName || "Admin";
                 document.getElementById('admin-header-avatar').src = user.photoURL || DEFAULT_AVATAR;
-
                 document.getElementById('modal-avatar-img').src = user.photoURL || DEFAULT_AVATAR;
                 document.getElementById('modal-name-text').innerText = user.displayName || "User"; 
                 document.getElementById('modal-email-text').innerText = user.email;
@@ -988,6 +1081,28 @@
 
                 fetchGlobalData();
                 applyLang();
+
+                // --- PRESENCE & TYPING LISTENERS ---
+                const myStatusRef = ref(db, `status/${user.uid}`);
+                onValue(ref(db, '.info/connected'), (snapshot) => {
+                    if (snapshot.val() === false) return;
+                    onDisconnect(myStatusRef).set({ state: 'offline', last_changed: Date.now() }).then(() => {
+                        set(myStatusRef, { state: 'online', last_changed: Date.now() });
+                    });
+                });
+
+                onValue(ref(db, 'status'), (snap) => {
+                    globalPresence = snap.val() || {};
+                    if(currentUserRole === 'admin') updateUsersInCatUI();
+                    if (typeof updateChatHeaderStatus === "function") updateChatHeaderStatus();
+                });
+
+                onValue(ref(db, 'typing'), (snap) => {
+                    globalTyping = snap.val() || {};
+                    if(currentUserRole === 'admin') updateUsersInCatUI();
+                    if (typeof updateChatHeaderStatus === "function") updateChatHeaderStatus();
+                });
+                // -----------------------------------
 
                 if(currentUserRole === "admin") {
                     adminBadge.classList.remove('hidden');
@@ -1010,6 +1125,7 @@
                 mainLayout.classList.add('hidden');
                 document.getElementById('profile-modal').classList.add('hidden');
                 document.getElementById('user-info-modal').classList.add('hidden');
+                document.getElementById('cat-manage-modal').classList.add('hidden');
                 authForm.reset();
                 applyLang();
                 if (activeChatListener) { activeChatListener.added(); activeChatListener.changed(); if(activeChatListener.removed) activeChatListener.removed(); activeChatListener = null; }
@@ -1033,7 +1149,9 @@
                 
                 if(currentChatRoomId !== userData.uid) {
                     currentChatRoomId = userData.uid; 
+                    currentSelectedUser = { role: 'admin' };
                     loadChatMessages(currentChatRoomId);
+                    updateChatHeaderStatus();
                 }
             }
         }
@@ -1082,17 +1200,22 @@
                 if(!activeChatListenersMap[userData.uid]) {
                     activeChatListenersMap[userData.uid] = true;
                     onValue(ref(db, `chats/${userData.uid}`), (msgSnap) => {
-                        let unreadCount = 0; let lastMsgTime = 0;
+                        let unreadCount = 0; let lastMsgTime = 0; let lastMsgText = '';
                         if(msgSnap.exists()) {
                             msgSnap.forEach(child => {
                                 const m = child.val();
                                 if(!m.deletedBy || !m.deletedBy[auth.currentUser.uid]) {
-                                    if (m.timestamp > lastMsgTime) lastMsgTime = m.timestamp;
+                                    if (m.timestamp > lastMsgTime) {
+                                        lastMsgTime = m.timestamp;
+                                        if (m.text) lastMsgText = m.text;
+                                        else if (m.imageUrl) lastMsgText = "📷 Photo";
+                                        else if (m.fileUrl) lastMsgText = "📎 " + (m.fileName || "File");
+                                    }
                                     if (m.uid !== auth.currentUser.uid && m.status !== 'seen') unreadCount++;
                                 }
                             });
                         }
-                        userUnreadData[userData.uid] = { unread: unreadCount, lastMsgTime: lastMsgTime };
+                        userUnreadData[userData.uid] = { unread: unreadCount, lastMsgTime: lastMsgTime, lastMsgText: lastMsgText };
                         renderAdminSidebar(); 
                         if(currentlyOpenCategory) updateUsersInCatUI();
                     });
@@ -1129,25 +1252,155 @@
                     </div>
                     <div class="unread-badge ${totalUnread > 0 ? '' : 'hidden'}">${totalUnread}</div>
                 `;
-                catDiv.onclick = () => openCategoryUsers(catName);
+                catDiv.onclick = () => openCategoryUsers(catObj); 
                 catListView.appendChild(catDiv);
             });
         }
 
-        function openCategoryUsers(catName) {
+        function openCategoryUsers(catObj) {
             document.getElementById('category-list-view').classList.add('hidden');
             document.getElementById('category-users-view').classList.remove('hidden');
-            document.getElementById('cat-view-title').innerText = catName;
-            currentlyOpenCategory = catName;
+            
+            document.getElementById('cat-view-title').innerText = catObj.name;
+            document.getElementById('cat-view-img').src = catObj.photoURL || DEFAULT_AVATAR; 
+            
+            currentlyOpenCategoryObj = catObj;
+            currentlyOpenCategory = catObj.name;
             updateUsersInCatUI();
+        }
+
+        document.getElementById('open-cat-manage-btn').addEventListener('click', () => {
+            if(!currentlyOpenCategoryObj) return;
+            document.getElementById('manage-cat-img').src = currentlyOpenCategoryObj.photoURL || DEFAULT_AVATAR;
+            document.getElementById('manage-cat-name-input').value = currentlyOpenCategoryObj.name;
+            renderManageCatUserList();
+            document.getElementById('cat-manage-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('close-cat-manage-btn').addEventListener('click', () => {
+            document.getElementById('cat-manage-modal').classList.add('hidden');
+        });
+
+        document.getElementById('add-user-cat-btn').addEventListener('click', async () => {
+            const email = document.getElementById('add-user-email-input').value.trim().toLowerCase();
+            if(!email) return alert(currentLang === 'bn' ? "ইমেইল দিন!" : "Enter email!");
+            const targetUser = globalUsers.find(u => u.email.toLowerCase() === email);
+            if(!targetUser) return alert(currentLang === 'bn' ? "এই ইমেইলের কোনো ইউজার পাওয়া যায়নি!" : "No user found with this email!");
+            
+            try {
+                await updateDoc(doc(dbFirestore, "Users", targetUser.uid), { category: currentlyOpenCategoryObj.name, status: "approved" });
+                alert(currentLang === 'bn' ? "ইউজার সফলভাবে অ্যাড হয়েছে!" : "User added successfully!");
+                document.getElementById('add-user-email-input').value = '';
+            } catch(e) { alert(e.message); }
+        });
+
+        document.getElementById('save-cat-info-btn').addEventListener('click', async () => {
+            const newName = document.getElementById('manage-cat-name-input').value.trim();
+            if(!newName) return alert(currentLang === 'bn' ? "নাম দিন!" : "Enter name!");
+            const oldName = currentlyOpenCategoryObj.name;
+            if(newName === oldName) return;
+
+            const btn = document.getElementById('save-cat-info-btn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                if (currentlyOpenCategoryObj.docId) {
+                    await updateDoc(doc(dbFirestore, "Categories", currentlyOpenCategoryObj.docId), { name: newName });
+                }
+                const usersToUpdate = globalUsers.filter(u => u.category === oldName);
+                const promises = usersToUpdate.map(u => updateDoc(doc(dbFirestore, "Users", u.uid), { category: newName }));
+                await Promise.all(promises);
+
+                currentlyOpenCategoryObj.name = newName;
+                currentlyOpenCategory = newName;
+                document.getElementById('cat-view-title').innerText = newName;
+                alert(currentLang === 'bn' ? "নাম সফলভাবে পরিবর্তন হয়েছে!" : "Name changed successfully!");
+            } catch(e) { alert(e.message); }
+            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+        });
+
+        document.getElementById('manage-cat-pic-input').addEventListener('change', async (e) => {
+            if (e.target.files.length > 0) {
+                const loader = document.getElementById('manage-cat-loader');
+                loader.classList.remove('hidden');
+                try {
+                    const compressedPic = await compressImage(e.target.files[0], 2);
+                    const newPhotoUrl = await uploadImageToImgBB(compressedPic);
+                    
+                    if (currentlyOpenCategoryObj.docId) {
+                        await updateDoc(doc(dbFirestore, "Categories", currentlyOpenCategoryObj.docId), { photoURL: newPhotoUrl });
+                    }
+                    currentlyOpenCategoryObj.photoURL = newPhotoUrl;
+                    document.getElementById('manage-cat-img').src = newPhotoUrl;
+                    document.getElementById('cat-view-img').src = newPhotoUrl;
+                    alert(currentLang === 'bn' ? "ক্যাটাগরির ছবি আপডেট হয়েছে!" : "Category picture updated!");
+                } catch(e) { alert(e.message); }
+                loader.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('delete-cat-btn').addEventListener('click', async () => {
+            const msg = currentLang === 'bn' ? "আপনি কি নিশ্চিত যে এই ক্যাটাগরি ডিলিট করতে চান?" : "Are you sure you want to delete this category?";
+            if(!confirm(msg)) return;
+            try {
+                if (currentlyOpenCategoryObj.docId) {
+                    await deleteDoc(doc(dbFirestore, "Categories", currentlyOpenCategoryObj.docId));
+                }
+                const oldName = currentlyOpenCategoryObj.name;
+                const usersToUpdate = globalUsers.filter(u => u.category === oldName);
+                const promises = usersToUpdate.map(u => updateDoc(doc(dbFirestore, "Users", u.uid), { category: "" }));
+                await Promise.all(promises);
+
+                document.getElementById('cat-manage-modal').classList.add('hidden');
+                document.getElementById('back-to-cat-btn').click(); 
+                alert(currentLang === 'bn' ? "ক্যাটাগরি ডিলিট করা হয়েছে!" : "Category deleted!");
+            } catch(e) { alert(e.message); }
+        });
+
+        function renderManageCatUserList() {
+            const listDiv = document.getElementById('manage-cat-user-list');
+            listDiv.innerHTML = '';
+            const approvedUsers = globalUsers.filter(u => u.role !== 'admin' && (u.status === 'approved' || !u.status));
+            const usersInCat = approvedUsers.filter(u => u.category === currentlyOpenCategoryObj.name);
+
+            if(usersInCat.length === 0) {
+                listDiv.innerHTML = `<p style="text-align:center; color:#888; font-size:12px; margin-top:5px;">${currentLang === 'bn' ? 'কোনো ইউজার নেই' : 'No users'}</p>`;
+                return;
+            }
+
+            usersInCat.forEach(u => {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.alignItems = 'center';
+                row.style.justifyContent = 'space-between';
+                row.style.padding = '8px';
+                row.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+                row.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px; overflow: hidden;">
+                        <img src="${u.photoURL || DEFAULT_AVATAR}" style="width:35px; height:35px; border-radius:50%; object-fit:cover; flex-shrink: 0;">
+                        <div style="font-size:13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>${u.name}</strong><br><small style="color:#64748b;">${u.email}</small></div>
+                    </div>
+                    <button class="btn btn-cancel" style="width:35px; height:35px; padding:0; margin:0; flex-shrink:0;" onclick="removeUserFromCat('${u.uid}')"><i class="fa-solid fa-trash"></i></button>
+                `;
+                listDiv.appendChild(row);
+            });
+        }
+
+        window.removeUserFromCat = async function(uid) {
+            try {
+                await updateDoc(doc(dbFirestore, "Users", uid), { category: "" });
+                alert(currentLang === 'bn' ? "ইউজার রিমুভ করা হয়েছে!" : "User removed!");
+            } catch(e) { alert(e.message); }
         }
 
         document.getElementById('back-to-cat-btn').addEventListener('click', () => {
             document.getElementById('category-users-view').classList.add('hidden');
             document.getElementById('category-list-view').classList.remove('hidden');
             currentlyOpenCategory = null;
+            currentlyOpenCategoryObj = null;
         });
 
+        // --- NEW: User List Update with Presence & Typing ---
         function updateUsersInCatUI() {
             if(!currentlyOpenCategory) return;
             const catUserList = document.getElementById('cat-user-list');
@@ -1162,17 +1415,49 @@
             }
 
             usersInCat.forEach(userData => {
+                const uid = userData.uid;
                 const userDiv = document.createElement('div');
                 userDiv.className = 'user-item';
-                if(currentChatRoomId === userData.uid) userDiv.classList.add('active');
+                if(currentChatRoomId === uid) userDiv.classList.add('active');
 
-                let unreadCount = userUnreadData[userData.uid]?.unread || 0;
-                let lastMsgTime = userUnreadData[userData.uid]?.lastMsgTime || 0;
+                let unreadCount = userUnreadData[uid]?.unread || 0;
+                let lastMsgTime = userUnreadData[uid]?.lastMsgTime || 0;
+                let lastMsgText = userUnreadData[uid]?.lastMsgText || 'No messages yet';
+                
+                const isOnline = globalPresence[uid]?.state === 'online';
+                const isTyping = globalTyping[uid] && globalTyping[uid][uid]; 
+                const dotClass = isOnline ? 'status-online' : 'status-offline';
+
+                let timeStr = '';
+                if (lastMsgTime > 0) {
+                    const d = new Date(lastMsgTime);
+                    let h = d.getHours(), m = d.getMinutes();
+                    const ampm = h >= 12 ? 'PM' : 'AM';
+                    h = h % 12 || 12; m = m < 10 ? '0'+m : m;
+                    timeStr = `${h}:${m} ${ampm}`;
+                }
+
+                let previewHtml = '';
+                if (isTyping) {
+                    previewHtml = `<div class="typing-text">Typing...</div>`;
+                } else {
+                    previewHtml = `
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="last-msg-preview">${lastMsgText}</div>
+                            <div style="font-size:10px; color:#94a3b8; margin-left:8px; flex-shrink:0;">${timeStr}</div>
+                        </div>`;
+                }
                 
                 userDiv.style.order = lastMsgTime > 0 ? -lastMsgTime : 0;
                 userDiv.innerHTML = `
-                    <img src="${userData.photoURL || DEFAULT_AVATAR}">
-                    <div class="user-item-info"><div class="user-item-name">${userData.name || 'Unknown'}</div></div>
+                    <div class="avatar-container">
+                        <img src="${userData.photoURL || DEFAULT_AVATAR}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; margin:0;">
+                        <div class="status-dot ${dotClass}"></div>
+                    </div>
+                    <div class="user-item-info" style="justify-content:center;">
+                        <div class="user-item-name">${userData.name || 'Unknown'}</div>
+                        ${previewHtml}
+                    </div>
                     <div class="unread-badge ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</div>
                 `;
 
@@ -1189,6 +1474,7 @@
                     
                     mainLayout.classList.add('mobile-chat-active');
                     loadChatMessages(currentChatRoomId);
+                    updateChatHeaderStatus();
                 };
                 catUserList.appendChild(userDiv);
             });
@@ -1296,7 +1582,6 @@
             document.getElementById('msg-options-modal').classList.add('hidden');
         });
 
-        // Load Messages
         function loadChatMessages(roomId) {
             messagesDiv.innerHTML = ''; 
             const chatRef = ref(db, `chats/${roomId}`);
@@ -1430,7 +1715,6 @@
             activeChatListener = { roomId: roomId, added: addedListener, changed: changedListener, removed: removedListener };
         }
 
-        // Deletion actions
         document.getElementById('btn-delete-cancel').addEventListener('click', () => {
             document.getElementById('delete-modal').classList.add('hidden');
             selectedMsgForOptions = null;
@@ -1456,6 +1740,16 @@
 
         document.getElementById('close-image-btn').addEventListener('click', () => document.getElementById('image-modal').classList.add('hidden'));
 
+        // --- NEW: Send Typing Status ---
+        const chatInputNode = document.getElementById('chat-input');
+        chatInputNode.addEventListener('input', () => {
+            if (!currentChatRoomId || !auth.currentUser) return;
+            const typingRef = ref(db, `typing/${currentChatRoomId}/${auth.currentUser.uid}`);
+            set(typingRef, true);
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => { set(typingRef, false); }, 2000);
+        });
+
         // Form Submit
         document.getElementById('chat-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1467,6 +1761,10 @@
                 currentReplyData = null;
                 document.getElementById('reply-preview').classList.add('hidden');
                 
+                // Stop typing immediately
+                const typingRef = ref(db, `typing/${currentChatRoomId}/${auth.currentUser.uid}`);
+                set(typingRef, false); clearTimeout(typingTimeout);
+
                 push(ref(db, `chats/${currentChatRoomId}`), {
                     text: msgText, imageUrl: null, fileUrl: null, replyTo: savedReplyData,
                     senderName: auth.currentUser.displayName || "Unknown", photoURL: auth.currentUser.photoURL || DEFAULT_AVATAR,
